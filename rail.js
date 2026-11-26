@@ -18,5 +18,6 @@ addEventListener('scroll',upd,{passive:true});addEventListener('resize',function
 addEventListener('load',function(){build();upd();chip.classList.remove('on')});
 build();r.style.display=(document.documentElement.scrollHeight-innerHeight<60)?'none':'';
 var p0=Math.min(1,Math.max(0,scrollY/max())),g0=geo();dot.style.transform='translateY('+(g0.t+p0*g0.h)+'px)';chip.style.transform=dot.style.transform;chip.textContent=label(p0);
-setTimeout(build,1500);
+setTimeout(function(){build();upd();chip.classList.remove('on')},1500);
+if(window.ResizeObserver)new ResizeObserver(function(){build();upd();chip.classList.remove('on')}).observe(document.body);
 })();

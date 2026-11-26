@@ -143,7 +143,7 @@ nav a:focus-visible,.hm a:focus-visible,nav button:focus-visible{outline:2px sol
  .tss-body{grid-template-columns:1fr}
  .rr h3,.rr p,.rr u,.rr i::after{transition:none}
 }
-section.tss{padding:0!important;max-width:none}.tss-stage{height:100vh;min-height:0!important;padding:84px 0 24px;justify-content:center;overflow:hidden}.tss .sh{margin-bottom:10px}.tss .rr{padding:15px 6px}.tss .rr h3{font-size:22px}.tss-svg{width:min(30vw,44vh,360px)}@media (max-width:760px){.tss-stage{padding-top:76px}.tss-svg{width:min(34vw,24vh)}.tss .rr{padding:12px 4px}}@media (prefers-reduced-motion:reduce){.tss-stage{height:auto;overflow:visible;padding:56px 0 0}}
+section.tss{padding:0!important;max-width:none}.tss-stage{height:100vh;min-height:0!important;padding:max(84px,19vh) 0 24px;justify-content:center;overflow:hidden}.tss .sh{margin-bottom:10px}.tss .rr{padding:15px 6px}.tss .rr h3{font-size:22px}.tss-svg{width:min(30vw,44vh,360px)}@media (max-width:760px){.tss-stage{padding-top:76px}.tss-svg{width:min(34vw,24vh)}.tss .rr{padding:12px 4px}}@media (prefers-reduced-motion:reduce){.tss-stage{height:auto;overflow:visible;padding:56px 0 0}}
 @media (max-width:760px){.rr{grid-template-columns:62px 1fr 24px!important}.rr.lit i::after{width:10px}.rr.lit u{transform:translateX(3px)}.rr.lit h3{transform:translateX(6px)}}
 
 /* scroll rail: thin line on the right edge with a dot that follows the page scroll */
@@ -155,3 +155,43 @@ section.tss{padding:0!important;max-width:none}.tss-stage{height:100vh;min-heigh
 .srail-chip.on{opacity:1}
 @media (max-width:760px){.srail{width:18px}.srail-line{right:8px;top:70px;bottom:90px}.srail-tick{right:5px;width:6px}.srail-dot{right:2.5px;width:12px;height:12px;margin-top:-6px}.srail-chip{right:22px}}
 @media print{.srail{display:none}}
+
+/* chapter rail (home): line, ticks, ring, hover label and a spring dot that leaves the name wordmark and rides the right edge */
+:root{--rx:23px}
+.hm h2 .stop-anchor,.hm .sh h2 .stop-anchor,.hm .band h2 .stop-anchor{font:inherit!important;font-style:normal!important;letter-spacing:inherit!important;text-transform:none!important;color:#c9b48a;background:none;border:0;padding:0;margin:0}
+.wm-stop{font-style:normal;color:transparent;-webkit-text-fill-color:transparent}
+.crail{position:fixed;top:0;bottom:0;right:0;width:76px;z-index:10;pointer-events:none;transition:opacity .28s}
+.crail-track{position:absolute;top:30%;bottom:26%;left:0;right:0}
+.crail-line{position:absolute;top:0;bottom:0;right:var(--rx);width:1px;background:#e9efe9;opacity:.22}
+.crail-stops{list-style:none;margin:0;padding:0}
+.crail-stops li{position:absolute;left:0;right:0;height:0}
+.crail-stop{position:absolute;right:calc(var(--rx) - 14px);top:-14px;width:28px;height:28px;display:block;pointer-events:auto;outline:none}
+.crail-stop span{position:absolute;right:10.5px;top:13.5px;width:7px;height:1px;background:#e9efe9;opacity:.45}
+.crail-stop[aria-current=true] span{opacity:.9}
+.crail-stop:focus-visible span{outline:1px solid #c9b48a;outline-offset:6px}
+.crail-marker{position:absolute;top:0;right:0;width:0;height:0;will-change:transform}
+.crail-ring{position:absolute;box-sizing:border-box;width:13px;height:13px;top:-6.5px;right:calc(var(--rx) - 6.5px);border:1.5px solid #c9b48a;border-radius:50%;opacity:0;transition:opacity .16s}
+.crail-marker[data-ring] .crail-ring{opacity:1}
+.crail-chip{position:fixed;top:-10px;right:calc(var(--rx) + 16px);height:20px;padding:0 9px;border-radius:999px;background:#e9efe9;color:#06170f;font:600 11px/20px Oswald,Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .16s;z-index:11;will-change:transform}
+.crail-chip[data-on]{opacity:1}
+.crail-dot{position:fixed;top:0;left:0;width:24px;height:24px;border-radius:50%;background:#c9b48a;pointer-events:none;opacity:0;transition:opacity .22s;z-index:12;will-change:transform}
+.crail-dot[data-on]{opacity:1}
+html.crail-on{scroll-behavior:smooth}
+@media (max-width:760px){:root{--rx:14px}.crail{width:44px}.crail-track{top:33%;bottom:21%}}
+@media (prefers-reduced-motion:reduce){html.crail-on{scroll-behavior:auto}.hm h2 .stop-anchor{color:inherit}.crail-chip,.crail-ring{transition:none}}
+@media print{.crail,.crail-dot,.crail-chip{display:none}}
+
+/* heading word drop: the gold word lifts out above its line and drops back with a bounce */
+.hm .sh h2 .wfx{display:inline-block;transform-origin:50% 100%;will-change:transform}
+.hm .sh h2 .wfx.pre{opacity:0;transform:translateY(-1.2em) rotate(-9deg)}
+.hm .sh h2 .wfx.go{animation:wfxdrop 1.05s cubic-bezier(.2,.7,.3,1) both}
+@keyframes wfxdrop{
+ 0%{opacity:0;transform:translateY(-1.2em) rotate(-9deg) scale(1,1)}
+ 12%{opacity:1}
+ 52%{transform:translateY(.10em) rotate(2deg) scale(1.06,.9)}
+ 70%{transform:translateY(-.16em) rotate(-1deg) scale(.98,1.04)}
+ 86%{transform:translateY(.03em) rotate(0) scale(1.01,.98)}
+ 100%{opacity:1;transform:translateY(0) rotate(0) scale(1,1)}}
+.hm .sh h2 .wfx.hop{animation:wfxhop .7s cubic-bezier(.2,.7,.3,1) both}
+@keyframes wfxhop{0%{transform:translateY(0)}40%{transform:translateY(-.32em) rotate(-4deg)}70%{transform:translateY(.05em) scale(1.03,.95)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.hm .sh h2 .wfx.pre{opacity:1;transform:none}.hm .sh h2 .wfx.go,.hm .sh h2 .wfx.hop{animation:none}}
